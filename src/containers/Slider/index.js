@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from "react";
+import { useEffect, useState,Fragment } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
 
@@ -11,8 +11,7 @@ const Slider = () => {
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
-
-  
+ 
   const nextCard = () => {
 // La condition vérifie si byDateDesc est défini avant d'exécuter nextCard
     if (byDateDesc) {
@@ -28,14 +27,11 @@ const Slider = () => {
   useEffect(() => {
     nextCard();
   }); 
-
-
- 
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-        // ajout d'une key unique dans la premiere div renvoyé par la map 
-        <div key={event.id}>
+        // ajout d'une key unique au composant Fragment
+        <Fragment key={event.title}>
           <div 
             className={`SlideCard SlideCard--${
               index === idx ? "display" : "hide"
@@ -55,7 +51,7 @@ const Slider = () => {
               {byDateDesc.map((_, radioIdx) => (
                 <input
                 // ajout d'un key unique 
-                  key={_.id}
+                  key={_.date}
                   type="radio"
                   name="radio-button"
                   checked={index === radioIdx}
@@ -64,7 +60,7 @@ const Slider = () => {
               ))}
             </div>
           </div>
-        </div>
+        </Fragment>
       ))}
     </div>
   );
