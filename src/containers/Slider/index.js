@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from "react";
 import { useData } from "../../contexts/DataContext";
 import { getMonth } from "../../helpers/Date";
@@ -10,21 +11,32 @@ const Slider = () => {
   const byDateDesc = data?.focus.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
   );
+
+  
   const nextCard = () => {
-    setTimeout(
-      () => setIndex(index < byDateDesc.length ? index + 1 : 0),
-      5000
-    );
+// La condition vérifie si byDateDesc est défini avant d'exécuter nextCard
+    if (byDateDesc) {
+      setTimeout(
+        // length - 1 après l'affichage de la dernière image, l'index sera ramené à 0
+        () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
+        5000
+      );
+    }
+  
   };
+
   useEffect(() => {
     nextCard();
-  });
+  }); 
+
+
+ 
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-        <>
-          <div
-            key={event.title}
+        // ajout d'une key unique dans la premiere div renvoyé par la map 
+        <div key={event.id}>
+          <div 
             className={`SlideCard SlideCard--${
               index === idx ? "display" : "hide"
             }`}
@@ -42,15 +54,17 @@ const Slider = () => {
             <div className="SlideCard__pagination">
               {byDateDesc.map((_, radioIdx) => (
                 <input
-                  key={`${event.id}`}
+                // ajout d'un key unique 
+                  key={_.id}
                   type="radio"
                   name="radio-button"
-                  checked={idx === radioIdx}
+                  checked={index === radioIdx}
+                  readOnly
                 />
               ))}
             </div>
           </div>
-        </>
+        </div>
       ))}
     </div>
   );
