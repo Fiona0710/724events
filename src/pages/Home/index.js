@@ -13,13 +13,9 @@ import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
 const Page = () => {
-  const { data } = useData();
-  // On trie les événements dans l'ordre décroissant en fonction de leur date
-// Le dernier événement (le plus récent) sera en premier dans le tableau trié
-  const last = data?.events.sort((evtA, evtB) =>
-    new Date(evtB.date) < new Date(evtA.date)? -1 : 1
-  )[0];
-
+  const { lastEvent } = useData();
+  // Récuperation des donneés du dernier élement via dataContext
+  
   return <>
     <header>
       <Menu />
@@ -122,12 +118,12 @@ const Page = () => {
     <footer className="row">
       <div className="col presta">
         <h3>Notre derniére prestation</h3>
-         {/* Vérifie si 'last' existe et que 'last.cover' et 'last.title' sont définis */}
-        {last && last.cover && last.title ? (
+         {/* Vérifie si 'lastEvent' existe et que 'lastEvent.cover' et 'lastEvent.title' sont définis */}
+        {lastEvent && lastEvent.cover && lastEvent.title ?(
         <EventCard
-          imageSrc={last?.cover}
-          title={last?.title}
-          date={new Date(last?.date)}
+          imageSrc={lastEvent.cover}
+          title={lastEvent.title}
+          date={new Date(lastEvent.date)}
           small
           label="boom"
         />
