@@ -19,7 +19,7 @@ const Select = ({
   // Ajout newValue comme paramètre de onChange  
     onChange(newValue);// Transmettre la nouvelle valeur sélectionnée à la fonction parente
     setValue(newValue);
-    setCollapsed(!collapsed); // inverse la valeur du state 
+    setCollapsed((currentCollapsed) => !currentCollapsed);// Inverser l'état de `collapsed` en utilisant la valeur actuelle
   };
   return (
     <div className={`SelectContainer ${type}`} data-testid="select-testid">
