@@ -1,3 +1,9 @@
 .SelectTitle {
   color: white;
 }
+.Pagination a{
+  padding-right: 10px;
+  &:hover{
+   text-decoration: underline;
+  }
+}
