@@ -1,6 +1,7 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { api, DataProvider } from "../../contexts/DataContext";
+import { act, fireEvent, render, screen } from "@testing-library/react"; // import de act
+import { api, DataProvider} from "../../contexts/DataContext";
 import Events from "./index";
+
 
 const data = {
   events: [
@@ -40,32 +41,44 @@ const data = {
 describe("When Events is created", () => {
   it("a list of event card is displayed", async () => {
     api.loadData = jest.fn().mockReturnValue(data);
-    render(
-      <DataProvider>
-        <Events />
-      </DataProvider>
-    );
-    await screen.findByText("avril");
+    // act(async) est utilisé pour wrapper les appels à api.loadData.
+    // Cela assure que les appels asynchrones et les mises à jour d'état associées 
+    // sont correctement synchronisés avec React.
+    await act(async () => {
+      render(
+        <DataProvider>
+          <Events />
+        </DataProvider>
+      );
+    }); 
+    // findByText remplacé par findByAllTest pour cibler le mot avril present plus d'une fois  
+    await screen.findAllByText("avril");  
   });
   describe("and an error occured", () => {
     it("an error message is displayed", async () => {
       api.loadData = jest.fn().mockRejectedValue();
-      render(
-        <DataProvider>
-          <Events />
-        </DataProvider>
-      );
-      expect(await screen.findByText("An error occured")).toBeInTheDocument();
+      await act(async () => {
+        render(
+          <DataProvider>
+            <Events />
+          </DataProvider>
+        );
+      }); 
+      // findByText remplacé par findByTestId
+        expect(await screen.findByTestId("An error occured")).toBeInTheDocument();
     });
-  });
+
   describe("and we select a category", () => {
-    it.only("an filtered list is displayed", async () => {
+    // it.only permet d'ignorer un test , je l'ai retiré pour debugger et valider les tests 
+    it("an filtered list is displayed", async () => {
       api.loadData = jest.fn().mockReturnValue(data);
-      render(
-        <DataProvider>
-          <Events />
-        </DataProvider>
-      );
+      await act(async () => {
+        render(
+          <DataProvider>
+            <Events />
+          </DataProvider>
+        );
+      });
       await screen.findByText("Forum #productCON");
       fireEvent(
         await screen.findByTestId("collapse-button-testid"),
@@ -85,17 +98,19 @@ describe("When Events is created", () => {
       await screen.findByText("Conférence #productCON");
       expect(screen.queryByText("Forum #productCON")).not.toBeInTheDocument();
     });
+    });
   });
 
   describe("and we click on an event", () => {
     it("the event detail is displayed", async () => {
       api.loadData = jest.fn().mockReturnValue(data);
-      render(
-        <DataProvider>
-          <Events />
-        </DataProvider>
-      );
-
+      await act(async () => {
+        render(
+          <DataProvider>
+            <Events />
+          </DataProvider>
+        );
+      });
       fireEvent(
         await screen.findByText("Conférence #productCON"),
         new MouseEvent("click", {
@@ -103,7 +118,6 @@ describe("When Events is created", () => {
           bubbles: true,
         })
       );
-
       await screen.findByText("24-25-26 Février");
       await screen.findByText("1 site web dédié");
     });
