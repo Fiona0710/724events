@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import Field, { FIELD_TYPES } from "../../components/Field";
 import Select from "../../components/Select";
 import Button, { BUTTON_TYPES } from "../../components/Button";
-// reduction de 1000 à 500 pour resoudre le test ce qui permet de trouvé "Message envoyé!"w
+// reduction de 1000 à 500 pour resoudre le test plus rapidement ce qui permet de trouvé "Message envoyé!"
 const mockContactApi = () => new Promise((resolve) => { setTimeout(resolve, 500); })
 
 const Form = ({ onSuccess, onError }) => {
