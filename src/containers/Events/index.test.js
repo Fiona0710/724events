@@ -26,7 +26,8 @@ const data = {
     {
       id: 2,
       type: "forum",
-      date: "2022-04-29T20:28:45.744Z",
+      // Modification de la date pour éviter la répétition d'avril et valider le test 
+      date: "2022-05-29T20:28:45.744Z",
       title: "Forum #productCON",
       cover: "/images/stem-list-EVgsAbL51Rk-unsplash.png",
       description:
@@ -50,13 +51,17 @@ describe("When Events is created", () => {
           <Events />
         </DataProvider>
       );
-    }); 
-    // findByText remplacé par findByAllTest pour cibler le mot avril present plus d'une fois  
-    await screen.findAllByText("avril");  
+    });  
+    expect(await screen.findByText("avril")).toBeInTheDocument();  
   });
+  
   describe("and an error occured", () => {
     it("an error message is displayed", async () => {
-      api.loadData = jest.fn().mockRejectedValue();
+      // Se moque de la fonction console.error pour éviter que les messages d'erreur n'encombrent la sortie du test
+      window.console.error = jest.fn();
+      // Se moque de la fonction api.loadData pour simuler une erreur de chargement de données
+      // La fonction rejettera avec le message d'erreur "Une erreur s'est produite"
+      api.loadData = jest.fn().mockRejectedValue("An error occured");
       await act(async () => {
         render(
           <DataProvider>
@@ -64,8 +69,7 @@ describe("When Events is created", () => {
           </DataProvider>
         );
       }); 
-      // findByText remplacé par findByTestId
-        expect(await screen.findByTestId("An error occured")).toBeInTheDocument();
+        expect(await screen.findByText("An error occured")).toBeInTheDocument();
     });
 
   describe("and we select a category", () => {
