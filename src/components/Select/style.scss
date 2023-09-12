@@ -58,6 +58,9 @@
     &.close {
       transform: rotate(180deg);
     }
+    &.open {
+      cursor: pointer;
+    }
   }
   .SelectTitle {
     &--show {
