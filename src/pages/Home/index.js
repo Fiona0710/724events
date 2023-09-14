@@ -60,7 +60,7 @@ const Page = () => {
       <section className="PeoplesContainer">
         <h2 id="notre-equipe" className="Title">Notre équipe</h2>
         <p>Une équipe d’experts dédiés à l’ogranisation de vos événements</p>
-        <div className="ListContainer">
+        <div data-testid='peopleList' className="ListContainer">
           <PeopleCard
             imageSrc="/images/stephanie-liverani-Zz5LQe-VSMY-unsplash.png"
             name="Samira"
@@ -115,8 +115,8 @@ const Page = () => {
         </Modal>
       </div>
     </main>
-    <footer className="row">
-      <div className="col presta">
+    <footer data-testid="footer-testid" className="row">
+      <div className="col presta" data-testid="last-event"> 
         <h3>Notre derniére prestation</h3>
          {/* Vérifie si 'lastEvent' existe et que 'lastEvent.cover' et 'lastEvent.title' sont définis */}
         {lastEvent && lastEvent.cover && lastEvent.title ?(
